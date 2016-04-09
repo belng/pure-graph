@@ -47,39 +47,33 @@ const UserType = new GraphQLObjectType({
   fields: () => Object.assign(attributeFields(User, fieldOptions), UserFields, {
     rels: {
       type: new GraphQLList(RelationType),
-      resolve(entity) {
-        return entity.getRels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(User.Relations)
     },
     roomrels: {
       type: new GraphQLList(RoomRelType),
-      resolve(entity) {
-        return entity.getRoomrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(User.RoomRels)
     },
     textrels: {
       type: new GraphQLList(TextRelType),
-      resolve(entity) {
-        return entity.getTextrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(User.TextRels)
     },
     threadrels: {
       type: new GraphQLList(ThreadRelType),
-      resolve(entity) {
-        return entity.getThreadrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(User.ThreadRels)
     },
     topicrels: {
       type: new GraphQLList(TopicRelType),
-      resolve(entity) {
-        return entity.getTopicrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(User.TopicRels)
     },
     privrels: {
       type: new GraphQLList(PrivRelType),
-      resolve(entity) {
-        return entity.getPrivrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(User.PrivRels)
     },
   })
 });
@@ -89,7 +83,7 @@ const ItemFields = {
   creator: {
     type: UserType,
     resolve(item) {
-      return db.models.user.findAll({ where: { id: item.creator } }).then(users => users[0]);
+      return item.getUser();
     }
   }
 };
@@ -98,7 +92,7 @@ const RelationFields = {
   user: {
     type: UserType,
     resolve(rel) {
-      return db.models.user.findAll({ where: { id: rel.user } }).then(users => users[0]);
+      return db.models.user.findOne({ where: { id: rel.user } });
     }
   }
 };
@@ -109,9 +103,8 @@ const PrivType = new GraphQLObjectType({
   fields: () => Object.assign(attributeFields(Priv, fieldOptions), ItemFields, {
     rels: {
       type: new GraphQLList(PrivRelType),
-      resolve(entity) {
-        return entity.getPrivrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(Priv.PrivRels)
     }
   })
 });
@@ -122,9 +115,8 @@ const RoomType = new GraphQLObjectType({
   fields: () => Object.assign(attributeFields(Room, fieldOptions), ItemFields, {
     rels: {
       type: new GraphQLList(RoomRelType),
-      resolve(entity) {
-        return entity.getRoomrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(Room.RoomRels)
     }
   })
 });
@@ -135,9 +127,8 @@ const TextType = new GraphQLObjectType({
   fields: () => Object.assign(attributeFields(Text, fieldOptions), ItemFields, {
     rels: {
       type: new GraphQLList(TextRelType),
-      resolve(entity) {
-        return entity.getTextrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(Text.TextRels)
     }
   })
 });
@@ -148,9 +139,8 @@ const ThreadType = new GraphQLObjectType({
   fields: () => Object.assign(attributeFields(Thread, fieldOptions), ItemFields, {
     rels: {
       type: new GraphQLList(ThreadRelType),
-      resolve(entity) {
-        return entity.getThreadrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(Thread.ThreadRels)
     }
   })
 });
@@ -161,9 +151,8 @@ const TopicType = new GraphQLObjectType({
   fields: () => Object.assign(attributeFields(Topic, fieldOptions), ItemFields, {
     rel: {
       type: new GraphQLList(TopicRelType),
-      resolve(entity) {
-        return entity.getTopicrels();
-      }
+      args: defaultListArgs(),
+      resolve: resolver(Topic.TopicRels)
     }
   })
 });
