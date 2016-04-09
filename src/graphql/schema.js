@@ -28,6 +28,7 @@ import db, {
   TopicRel,
   PrivRel,
 } from '../db/db';
+import EntityFields from './fields/EntityFields';
 import UserFields from './fields/UserFields';
 
 const fieldOptions = {
@@ -83,7 +84,8 @@ const UserType = new GraphQLObjectType({
   })
 });
 
-const itemFields = {
+const ItemFields = {
+  ...EntityFields,
   creator: {
     type: UserType,
     resolve(item) {
@@ -92,7 +94,7 @@ const itemFields = {
   }
 };
 
-const relationFields = {
+const RelationFields = {
   user: {
     type: UserType,
     resolve(rel) {
@@ -104,7 +106,7 @@ const relationFields = {
 const PrivType = new GraphQLObjectType({
   name: 'Priv',
   description: 'Represents a private chat',
-  fields: () => Object.assign(attributeFields(Priv, fieldOptions), itemFields, {
+  fields: () => Object.assign(attributeFields(Priv, fieldOptions), ItemFields, {
     rels: {
       type: new GraphQLList(PrivRelType),
       resolve(entity) {
@@ -117,7 +119,7 @@ const PrivType = new GraphQLObjectType({
 const RoomType = new GraphQLObjectType({
   name: 'Room',
   description: 'Represents a Room',
-  fields: () => Object.assign(attributeFields(Room, fieldOptions), itemFields, {
+  fields: () => Object.assign(attributeFields(Room, fieldOptions), ItemFields, {
     rels: {
       type: new GraphQLList(RoomRelType),
       resolve(entity) {
@@ -130,7 +132,7 @@ const RoomType = new GraphQLObjectType({
 const TextType = new GraphQLObjectType({
   name: 'Text',
   description: 'Represents a Text',
-  fields: () => Object.assign(attributeFields(Text, fieldOptions), itemFields, {
+  fields: () => Object.assign(attributeFields(Text, fieldOptions), ItemFields, {
     rels: {
       type: new GraphQLList(TextRelType),
       resolve(entity) {
@@ -143,7 +145,7 @@ const TextType = new GraphQLObjectType({
 const ThreadType = new GraphQLObjectType({
   name: 'Thread',
   description: 'Represents a Thread',
-  fields: () => Object.assign(attributeFields(Thread, fieldOptions), itemFields, {
+  fields: () => Object.assign(attributeFields(Thread, fieldOptions), ItemFields, {
     rels: {
       type: new GraphQLList(ThreadRelType),
       resolve(entity) {
@@ -156,7 +158,7 @@ const ThreadType = new GraphQLObjectType({
 const TopicType = new GraphQLObjectType({
   name: 'Topic',
   description: 'Represents a Topic',
-  fields: () => Object.assign(attributeFields(Topic, fieldOptions), itemFields, {
+  fields: () => Object.assign(attributeFields(Topic, fieldOptions), ItemFields, {
     rel: {
       type: new GraphQLList(TopicRelType),
       resolve(entity) {
@@ -169,13 +171,13 @@ const TopicType = new GraphQLObjectType({
 const RelationType = new GraphQLObjectType({
   name: 'Relation',
   description: 'This represents a Relation',
-  fields: () => Object.assign(attributeFields(Relation, fieldOptions), relationFields)
+  fields: () => Object.assign(attributeFields(Relation, fieldOptions), RelationFields)
 });
 
 const RoomRelType = new GraphQLObjectType({
   name: 'RoomRel',
   description: 'This represents a Relation',
-  fields: () => Object.assign(attributeFields(RoomRel, fieldOptions), relationFields, {
+  fields: () => Object.assign(attributeFields(RoomRel, fieldOptions), RelationFields, {
     room: {
       type: RoomType,
       resolve(rel) {
@@ -188,7 +190,7 @@ const RoomRelType = new GraphQLObjectType({
 const TextRelType = new GraphQLObjectType({
   name: 'TextRel',
   description: 'This represents a Relation',
-  fields: () => Object.assign(attributeFields(TextRel, fieldOptions), relationFields, {
+  fields: () => Object.assign(attributeFields(TextRel, fieldOptions), RelationFields, {
     text: {
       type: TextType,
       resolve(rel) {
@@ -201,7 +203,7 @@ const TextRelType = new GraphQLObjectType({
 const ThreadRelType = new GraphQLObjectType({
   name: 'ThreadRel',
   description: 'This represents a Relation',
-  fields: () => Object.assign(attributeFields(ThreadRel, fieldOptions), relationFields, {
+  fields: () => Object.assign(attributeFields(ThreadRel, fieldOptions), RelationFields, {
     thread: {
       type: ThreadType,
       resolve(rel) {
@@ -214,7 +216,7 @@ const ThreadRelType = new GraphQLObjectType({
 const TopicRelType = new GraphQLObjectType({
   name: 'TopicRel',
   description: 'This represents a Relation',
-  fields: () => Object.assign(attributeFields(TopicRel, fieldOptions), relationFields, {
+  fields: () => Object.assign(attributeFields(TopicRel, fieldOptions), RelationFields, {
     topic: {
       type: TopicType,
       resolve(rel) {
@@ -227,7 +229,7 @@ const TopicRelType = new GraphQLObjectType({
 const PrivRelType = new GraphQLObjectType({
   name: 'PrivRel',
   description: 'This represents a Relation',
-  fields: () => Object.assign(attributeFields(PrivRel, fieldOptions), relationFields, {
+  fields: () => Object.assign(attributeFields(PrivRel, fieldOptions), RelationFields, {
     priv: {
       type: PrivType,
       resolve(rel) {
