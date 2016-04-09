@@ -7,13 +7,13 @@ const RelationModel = {
     type: Sequelize.BOOLEAN
   },
   expiretime: {
-    type: Sequelize.DATE
+    type: Sequelize.BIGINT
   },
   interest: {
     type: Sequelize.INTEGER
   },
   item: {
-    type: Sequelize.STRING,
+    type: Sequelize.UUID,
     allowNull: false,
     primaryKey: true,
   },
@@ -24,16 +24,16 @@ const RelationModel = {
     type: Sequelize.INTEGER,
   },
   presencetime: {
-    type: Sequelize.DATE
+    type: Sequelize.BIGINT
   },
   resources: {
     type: Sequelize.JSONB
   },
   createtime: {
-    type: Sequelize.DATE
+    type: Sequelize.BIGINT
   },
   updatetime: {
-    type: Sequelize.DATE
+    type: Sequelize.BIGINT
   },
   user: {
     type: Sequelize.STRING,

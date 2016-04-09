@@ -7,14 +7,14 @@ const EntityModel = {
     type: Sequelize.JSONB
   },
   createtime: {
-    type: Sequelize.DATE,
+    type: Sequelize.BIGINT,
     allowNull: false
   },
   deletetime: {
-    type: Sequelize.DATE
+    type: Sequelize.BIGINT
   },
   id: {
-    type: Sequelize.STRING,
+    type: Sequelize.UUID,
     allowNull: false,
     primaryKey: true,
   },
@@ -31,7 +31,7 @@ const EntityModel = {
     type: Sequelize.ARRAY(Sequelize.INTEGER)
   },
   updatetime: {
-    type: Sequelize.DATE,
+    type: Sequelize.BIGINT,
   },
 };
 

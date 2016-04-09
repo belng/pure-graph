@@ -32,13 +32,7 @@ import EntityFields from './fields/EntityFields';
 import UserFields from './fields/UserFields';
 
 const fieldOptions = {
-  exclude: [ 'counts', 'meta', 'params', 'resources' ],
-  map: {
-    createtime: 'createTime',
-    updatetime: 'updateTime',
-    deletetime: 'deleteTime',
-    presencetime: 'presenceTime',
-  }
+  exclude: [ 'counts', 'meta', 'params', 'resources' ]
 };
 
 const UserType = new GraphQLObjectType({

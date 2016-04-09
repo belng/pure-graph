@@ -5,6 +5,11 @@ import EntityModel from './EntityModel';
 
 const UserModel = {
   ...EntityModel,
+  id: {
+    type: Sequelize.STRING,
+    allowNull: false,
+    primaryKey: true,
+  },
   identities: {
     type: Sequelize.ARRAY(Sequelize.TEXT)
   },
@@ -15,7 +20,7 @@ const UserModel = {
     type: Sequelize.INTEGER
   },
   presencetime: {
-    type: Sequelize.DATE
+    type: Sequelize.BIGINT
   },
   resources: {
     type: Sequelize.JSONB

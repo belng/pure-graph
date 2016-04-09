@@ -12,7 +12,7 @@ const ItemModel = {
     type: Sequelize.STRING
   },
   parents: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
+    type: Sequelize.ARRAY(Sequelize.UUID)
   },
   updater: {
     type: Sequelize.STRING

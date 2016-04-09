@@ -8,6 +8,7 @@ import ThreadModel from './models/ThreadModel';
 import TopicModel from './models/TopicModel';
 import UserModel from './models/UserModel';
 import RelationModel from './models/RelationModel';
+import NoteModel from './models/NoteModel';
 import config from '../../config.json';
 
 const { postgres } = config;
@@ -25,7 +26,7 @@ const db = new Sequelize(
 const fieldMaps = {
   createdAt: 'createtime',
   updatedAt: 'updatetime',
-  deletedAt: 'deleteTime',
+  deletedAt: 'deletetime',
 };
 
 export const Priv = db.define('priv', PrivModel, fieldMaps);
@@ -40,6 +41,7 @@ export const TextRel = db.define('textrel', RelationModel, fieldMaps);
 export const ThreadRel = db.define('threadrel', RelationModel, fieldMaps);
 export const TopicRel = db.define('topicrel', RelationModel, fieldMaps);
 export const PrivRel = db.define('privrel', RelationModel, fieldMaps);
+export const Note = db.define('privrel', NoteModel, fieldMaps);
 
 User.Relations = User.hasMany(Relation, { foreignKey: 'user' });
 User.RoomRels = User.hasMany(RoomRel, { foreignKey: 'user' });
@@ -47,6 +49,7 @@ User.TextRels = User.hasMany(TextRel, { foreignKey: 'user' });
 User.ThreadRels = User.hasMany(ThreadRel, { foreignKey: 'user' });
 User.TopicRels = User.hasMany(TopicRel, { foreignKey: 'user' });
 User.PrivRels = User.hasMany(PrivRel, { foreignKey: 'user' });
+User.Notes = User.hasMany(Note, { foreignKey: 'user' });
 
 Room.RoomRels = Room.hasMany(RoomRel, { foreignKey: 'item' });
 Text.TextRels = Text.hasMany(TextRel, { foreignKey: 'item' });
