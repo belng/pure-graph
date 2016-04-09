@@ -111,7 +111,29 @@ const RoomType = new GraphQLObjectType({
       type: new GraphQLList(RoomRelType),
       args: defaultListArgs(),
       resolve: resolver(Room.RoomRels)
-    }
+    },
+    threads: {
+      type: new GraphQLList(ThreadType),
+      args: defaultListArgs(),
+      resolve(entity, args) {
+        return db.models.thread.findAll({
+          limit: args.limit,
+          order: args.order,
+          where: { parents: { $contains: [ entity.id ] }, ...args.where },
+        });
+      }
+    },
+    texts: {
+      type: new GraphQLList(TextType),
+      args: defaultListArgs(),
+      resolve(entity, args) {
+        return db.models.text.findAll({
+          limit: args.limit,
+          order: args.order,
+          where: { parents: { $contains: [ entity.id ] }, ...args.where },
+        });
+      }
+    },
   })
 });
 
@@ -135,7 +157,18 @@ const ThreadType = new GraphQLObjectType({
       type: new GraphQLList(ThreadRelType),
       args: defaultListArgs(),
       resolve: resolver(Thread.ThreadRels)
-    }
+    },
+    texts: {
+      type: new GraphQLList(TextType),
+      args: defaultListArgs(),
+      resolve(entity, args) {
+        return db.models.text.findAll({
+          limit: args.limit,
+          order: args.order,
+          where: { parents: { $contains: [ entity.id ] }, ...args.where },
+        });
+      }
+    },
   })
 });
 
