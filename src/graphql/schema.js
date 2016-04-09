@@ -28,8 +28,9 @@ import db, {
   TopicRel,
   PrivRel,
 } from '../db/db';
-import EntityFields from './fields/EntityFields';
-import UserFields from './fields/UserFields';
+import ItemCountsFields from './fields/ItemCountsFields';
+import EntityMetaFields from './fields/EntityMetaFields';
+import UserParamsFields from './fields/UserParamFields';
 
 const fieldOptions = {
   exclude: [ 'counts', 'meta', 'params', 'resources' ]
@@ -38,7 +39,7 @@ const fieldOptions = {
 const UserType = new GraphQLObjectType({
   name: 'User',
   description: 'This represents a User',
-  fields: () => Object.assign(attributeFields(User, fieldOptions), UserFields, {
+  fields: () => Object.assign(attributeFields(User, fieldOptions), EntityMetaFields, UserParamsFields, {
     rels: {
       type: new GraphQLList(RelationType),
       args: defaultListArgs(),
@@ -73,7 +74,8 @@ const UserType = new GraphQLObjectType({
 });
 
 const ItemFields = {
-  ...EntityFields,
+  ...ItemCountsFields,
+  ...EntityMetaFields,
   creator: {
     type: UserType,
     resolve(item) {

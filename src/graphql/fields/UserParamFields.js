@@ -7,10 +7,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import EntityFields from './EntityFields';
-
-const UserFields = {
-  ...EntityFields,
+const ParamsFields = {
   params: {
     type: new GraphQLObjectType({
       name: 'params',
@@ -105,28 +102,6 @@ const UserFields = {
       return entity.params;
     }
   },
-  meta: {
-    type: new GraphQLObjectType({
-      name: 'meta',
-      fields: () => ({
-        picture: {
-          type: GraphQLString,
-          resolve(meta) {
-            return meta.picture;
-          }
-        },
-        description: {
-          type: GraphQLString,
-          resolve(meta) {
-            return meta.description;
-          }
-        },
-      })
-    }),
-    resolve(entity) {
-      return entity.meta;
-    }
-  },
 };
 
-export default UserFields;
+export default ParamsFields;

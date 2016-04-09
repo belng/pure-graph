@@ -5,10 +5,10 @@ import {
   GraphQLInt,
 } from 'graphql';
 
-const EntityFields = {
+const CountsFields = {
   counts: {
     type: new GraphQLObjectType({
-      name: 'counts',
+      name: 'ItemCounts',
       fields: () => ({
         children: {
           type: GraphQLInt,
@@ -24,4 +24,4 @@ const EntityFields = {
   },
 };
 
-export default EntityFields;
+export default CountsFields;
