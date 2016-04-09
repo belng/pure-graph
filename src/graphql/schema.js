@@ -40,71 +40,6 @@ const fieldOptions = {
   }
 };
 
-const PrivType = new GraphQLObjectType({
-  name: 'Priv',
-  description: 'Represents a private chat',
-  fields: () => Object.assign(attributeFields(Priv, fieldOptions), {
-    rels: {
-      type: new GraphQLList(PrivRelType),
-      resolve(entity) {
-        return entity.getPrivrels();
-      }
-    }
-  })
-});
-
-const RoomType = new GraphQLObjectType({
-  name: 'Room',
-  description: 'Represents a Room',
-  fields: () => Object.assign(attributeFields(Room, fieldOptions), {
-    rels: {
-      type: new GraphQLList(RoomRelType),
-      resolve(entity) {
-        return entity.getRoomrels();
-      }
-    }
-  })
-});
-
-const TextType = new GraphQLObjectType({
-  name: 'Text',
-  description: 'Represents a Text',
-  fields: () => Object.assign(attributeFields(Text, fieldOptions), {
-    rels: {
-      type: new GraphQLList(TextRelType),
-      resolve(entity) {
-        return entity.getTextrels();
-      }
-    }
-  })
-});
-
-const ThreadType = new GraphQLObjectType({
-  name: 'Thread',
-  description: 'Represents a Thread',
-  fields: () => Object.assign(attributeFields(Thread, fieldOptions), {
-    rels: {
-      type: new GraphQLList(ThreadRelType),
-      resolve(entity) {
-        return entity.getThreadrels();
-      }
-    }
-  })
-});
-
-const TopicType = new GraphQLObjectType({
-  name: 'Topic',
-  description: 'Represents a Topic',
-  fields: () => Object.assign(attributeFields(Topic, fieldOptions), {
-    rel: {
-      type: new GraphQLList(TopicRelType),
-      resolve(entity) {
-        return entity.getTopicrels();
-      }
-    }
-  })
-});
-
 const UserType = new GraphQLObjectType({
   name: 'User',
   description: 'This represents a User',
@@ -148,6 +83,15 @@ const UserType = new GraphQLObjectType({
   })
 });
 
+const itemFields = {
+  creator: {
+    type: UserType,
+    resolve(item) {
+      return db.models.user.findAll({ where: { id: item.creator } }).then(users => users[0]);
+    }
+  }
+};
+
 const relationFields = {
   user: {
     type: UserType,
@@ -156,6 +100,71 @@ const relationFields = {
     }
   }
 };
+
+const PrivType = new GraphQLObjectType({
+  name: 'Priv',
+  description: 'Represents a private chat',
+  fields: () => Object.assign(attributeFields(Priv, fieldOptions), itemFields, {
+    rels: {
+      type: new GraphQLList(PrivRelType),
+      resolve(entity) {
+        return entity.getPrivrels();
+      }
+    }
+  })
+});
+
+const RoomType = new GraphQLObjectType({
+  name: 'Room',
+  description: 'Represents a Room',
+  fields: () => Object.assign(attributeFields(Room, fieldOptions), itemFields, {
+    rels: {
+      type: new GraphQLList(RoomRelType),
+      resolve(entity) {
+        return entity.getRoomrels();
+      }
+    }
+  })
+});
+
+const TextType = new GraphQLObjectType({
+  name: 'Text',
+  description: 'Represents a Text',
+  fields: () => Object.assign(attributeFields(Text, fieldOptions), itemFields, {
+    rels: {
+      type: new GraphQLList(TextRelType),
+      resolve(entity) {
+        return entity.getTextrels();
+      }
+    }
+  })
+});
+
+const ThreadType = new GraphQLObjectType({
+  name: 'Thread',
+  description: 'Represents a Thread',
+  fields: () => Object.assign(attributeFields(Thread, fieldOptions), itemFields, {
+    rels: {
+      type: new GraphQLList(ThreadRelType),
+      resolve(entity) {
+        return entity.getThreadrels();
+      }
+    }
+  })
+});
+
+const TopicType = new GraphQLObjectType({
+  name: 'Topic',
+  description: 'Represents a Topic',
+  fields: () => Object.assign(attributeFields(Topic, fieldOptions), itemFields, {
+    rel: {
+      type: new GraphQLList(TopicRelType),
+      resolve(entity) {
+        return entity.getTopicrels();
+      }
+    }
+  })
+});
 
 const RelationType = new GraphQLObjectType({
   name: 'Relation',
