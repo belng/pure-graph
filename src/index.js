@@ -8,7 +8,7 @@ import config from '../config.json';
 
 const app = koa();
 
-app.use(mount('/graph', graphql({
+app.use(mount('/graphql', graphql({
   schema,
   pretty: process.env.NODE_ENV !== 'production',
   graphiql: true

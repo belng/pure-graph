@@ -270,7 +270,7 @@ const RelationArgs = Object.assign(defaultListArgs(), {
   },
 });
 
-const Query = new GraphQLObjectType({
+const QueryType = new GraphQLObjectType({
   name: 'Query',
   description: 'Root query object',
   fields: () => {
@@ -340,7 +340,7 @@ const Query = new GraphQLObjectType({
 });
 
 const Schema = new GraphQLSchema({
-  query: Query,
+  query: QueryType
 });
 
 export default Schema;
