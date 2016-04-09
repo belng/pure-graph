@@ -79,6 +79,12 @@ const ItemFields = {
     resolve(item) {
       return item.getUser();
     }
+  },
+  updater: {
+    type: UserType,
+    resolve(item) {
+      return db.models.user.findOne({ where: { id: item.updater } });
+    }
   }
 };
 
