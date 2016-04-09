@@ -15,6 +15,7 @@ const EntityModel = {
   },
   id: {
     type: Sequelize.STRING,
+    allowNull: false,
     primaryKey: true,
   },
   meta: {

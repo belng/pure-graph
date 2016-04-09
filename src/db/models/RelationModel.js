@@ -14,7 +14,8 @@ const RelationModel = {
   },
   item: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true,
   },
   message: {
     type: Sequelize.STRING
@@ -36,7 +37,8 @@ const RelationModel = {
   },
   user: {
     type: Sequelize.STRING,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true,
   },
 };
 

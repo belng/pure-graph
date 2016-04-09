@@ -41,33 +41,29 @@ export const ThreadRel = db.define('threadrel', RelationModel, fieldMaps);
 export const TopicRel = db.define('topicrel', RelationModel, fieldMaps);
 export const PrivRel = db.define('privrel', RelationModel, fieldMaps);
 
-Relation.removeAttribute('id');
-RoomRel.removeAttribute('id');
-TextRel.removeAttribute('id');
-ThreadRel.removeAttribute('id');
-TopicRel.removeAttribute('id');
-PrivRel.removeAttribute('id');
+User.Relations = User.hasMany(Relation, { foreignKey: 'user' });
+User.RoomRels = User.hasMany(RoomRel, { foreignKey: 'user' });
+User.TextRels = User.hasMany(TextRel, { foreignKey: 'user' });
+User.ThreadRels = User.hasMany(ThreadRel, { foreignKey: 'user' });
+User.TopicRels = User.hasMany(TopicRel, { foreignKey: 'user' });
+User.PrivRels = User.hasMany(PrivRel, { foreignKey: 'user' });
 
-User.hasMany(Relation, { foreignKey: 'user' });
-User.hasMany(RoomRel, { foreignKey: 'user' });
-User.hasMany(TextRel, { foreignKey: 'user' });
-User.hasMany(ThreadRel, { foreignKey: 'user' });
-User.hasMany(TopicRel, { foreignKey: 'user' });
-User.hasMany(PrivRel, { foreignKey: 'user' });
-Room.hasMany(RoomRel, { foreignKey: 'item' });
-Text.hasMany(TextRel, { foreignKey: 'item' });
-Thread.hasMany(ThreadRel, { foreignKey: 'item' });
-Topic.hasMany(TopicRel, { foreignKey: 'item' });
-Priv.hasMany(PrivRel, { foreignKey: 'item' });
-Room.belongsTo(User, { foreignKey: 'creator' });
-Text.belongsTo(User, { foreignKey: 'creator' });
-Thread.belongsTo(User, { foreignKey: 'creator' });
-Topic.belongsTo(User, { foreignKey: 'creator' });
-Priv.belongsTo(User, { foreignKey: 'creator' });
-RoomRel.belongsTo(Room, { foreignKey: 'item' });
-TextRel.belongsTo(Text, { foreignKey: 'item' });
-ThreadRel.belongsTo(Thread, { foreignKey: 'item' });
-TopicRel.belongsTo(Topic, { foreignKey: 'item' });
-PrivRel.belongsTo(Priv, { foreignKey: 'item' });
+Room.RoomRels = Room.hasMany(RoomRel, { foreignKey: 'item' });
+Text.TextRels = Text.hasMany(TextRel, { foreignKey: 'item' });
+Thread.ThreadRels = Thread.hasMany(ThreadRel, { foreignKey: 'item' });
+Topic.TopicRels = Topic.hasMany(TopicRel, { foreignKey: 'item' });
+Priv.PrivRels = Priv.hasMany(PrivRel, { foreignKey: 'item' });
+
+RoomRel.Room = RoomRel.belongsTo(Room, { foreignKey: 'item' });
+TextRel.Text = TextRel.belongsTo(Text, { foreignKey: 'item' });
+ThreadRel.Thread = ThreadRel.belongsTo(Thread, { foreignKey: 'item' });
+TopicRel.Topic = TopicRel.belongsTo(Topic, { foreignKey: 'item' });
+PrivRel.Priv = PrivRel.belongsTo(Priv, { foreignKey: 'item' });
+
+Room.User = Room.belongsTo(User, { foreignKey: 'creator' });
+Text.User = Text.belongsTo(User, { foreignKey: 'creator' });
+Thread.User = Thread.belongsTo(User, { foreignKey: 'creator' });
+Topic.User = Topic.belongsTo(User, { foreignKey: 'creator' });
+Priv.User = Priv.belongsTo(User, { foreignKey: 'creator' });
 
 export default db;
