@@ -6,7 +6,7 @@ import EntityModel from './EntityModel';
 const UserModel = {
   ...EntityModel,
   identities: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
+    type: Sequelize.ARRAY(Sequelize.TEXT)
   },
   locale: {
     type: Sequelize.INTEGER

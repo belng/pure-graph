@@ -6,7 +6,7 @@ import ItemModel from './ItemModel';
 const RoomModel = {
   ...ItemModel,
   identities: {
-    type: Sequelize.ARRAY(Sequelize.STRING)
+    type: Sequelize.ARRAY(Sequelize.TEXT)
   },
 };
 
