@@ -9,11 +9,11 @@ const CountsFields: { [key: string]: Object } = {
   counts: {
     type: new GraphQLObjectType({
       name: 'ItemCounts',
-      fields: () => ({
+      fields: {
         children: {
           type: GraphQLInt,
         },
-      }),
+      },
     }),
   },
 };

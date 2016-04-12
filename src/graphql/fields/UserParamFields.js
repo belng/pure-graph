@@ -11,11 +11,11 @@ const ParamsFields: { [key: string]: Object } = {
   params: {
     type: new GraphQLObjectType({
       name: 'params',
-      fields: () => ({
+      fields: {
         email: {
           type: new GraphQLObjectType({
             name: 'email',
-            fields: () => ({
+            fields: {
               notifications: {
                 type: GraphQLBoolean,
               },
@@ -28,13 +28,13 @@ const ParamsFields: { [key: string]: Object } = {
                   },
                 }),
               },
-            }),
+            },
           }),
         },
         facebook: {
           type: new GraphQLObjectType({
             name: 'facebook',
-            fields: () => ({
+            fields: {
               name: {
                 type: GraphQLString,
               },
@@ -44,13 +44,13 @@ const ParamsFields: { [key: string]: Object } = {
               verified: {
                 type: GraphQLBoolean,
               },
-            }),
+            },
           }),
         },
         google: {
           type: new GraphQLObjectType({
             name: 'google',
-            fields: () => ({
+            fields: {
               name: {
                 type: GraphQLString,
               },
@@ -60,10 +60,10 @@ const ParamsFields: { [key: string]: Object } = {
               verified: {
                 type: GraphQLBoolean,
               },
-            }),
+            },
           }),
         },
-      }),
+      },
     }),
   },
 };

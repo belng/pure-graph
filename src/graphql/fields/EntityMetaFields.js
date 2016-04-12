@@ -10,7 +10,7 @@ const EntityMetaFields: { [key: string]: Object } = {
   meta: {
     type: new GraphQLObjectType({
       name: 'meta',
-      fields: () => ({
+      fields: {
         picture: {
           type: GraphQLString,
         },
@@ -20,7 +20,7 @@ const EntityMetaFields: { [key: string]: Object } = {
         photo: {
           type: new GraphQLObjectType({
             name: 'photo',
-            fields: () => ({
+            fields: {
               height: {
                 type: GraphQLInt,
               },
@@ -45,10 +45,10 @@ const EntityMetaFields: { [key: string]: Object } = {
               type: {
                 type: GraphQLString,
               },
-            }),
+            },
           }),
         },
-      }),
+      },
     }),
   },
 };
