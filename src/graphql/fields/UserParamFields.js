@@ -18,9 +18,6 @@ const ParamsFields = {
             fields: () => ({
               notifications: {
                 type: GraphQLBoolean,
-                resolve(email) {
-                  return email.notifications;
-                }
               },
               frequency: {
                 type: new GraphQLEnumType({
@@ -28,17 +25,11 @@ const ParamsFields = {
                   values: {
                     daily: { value: 'daily' },
                     never: { value: 'never' },
-                  }
+                  },
                 }),
-                resolve(email) {
-                  return email.frequency;
-                }
-              }
-            })
+              },
+            }),
           }),
-          resolve(params) {
-            return params.email;
-          }
         },
         facebook: {
           type: new GraphQLObjectType({
@@ -46,26 +37,14 @@ const ParamsFields = {
             fields: () => ({
               name: {
                 type: GraphQLString,
-                resolve(facebook) {
-                  return facebook.name;
-                }
               },
               picture: {
                 type: GraphQLString,
-                resolve(facebook) {
-                  return facebook.picture;
-                }
               },
               verified: {
                 type: GraphQLBoolean,
-                resolve(facebook) {
-                  return facebook.verified;
-                }
               },
             }),
-            resolve(params) {
-              return params.facebook;
-            }
           }),
         },
         google: {
@@ -74,33 +53,18 @@ const ParamsFields = {
             fields: () => ({
               name: {
                 type: GraphQLString,
-                resolve(google) {
-                  return google.name;
-                }
               },
               picture: {
                 type: GraphQLString,
-                resolve(google) {
-                  return google.picture;
-                }
               },
               verified: {
                 type: GraphQLBoolean,
-                resolve(google) {
-                  return google.verified;
-                }
               },
             }),
-            resolve(params) {
-              return params.google;
-            }
           }),
         },
-      })
+      }),
     }),
-    resolve(entity) {
-      return entity.params;
-    }
   },
 };
 

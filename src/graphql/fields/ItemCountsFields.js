@@ -12,15 +12,9 @@ const CountsFields = {
       fields: () => ({
         children: {
           type: GraphQLInt,
-          resolve(counts) {
-            return counts ? counts.children : null;
-          }
-        }
-      })
+        },
+      }),
     }),
-    resolve(entity) {
-      return entity.counts;
-    }
   },
 };
 
