@@ -4,7 +4,7 @@
 import {
   resolver,
   attributeFields,
-  defaultListArgs
+  defaultListArgs,
 } from 'graphql-sequelize';
 
 import {
@@ -14,7 +14,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
-import db, {
+import {
   Priv,
   Room,
   Text,
@@ -28,13 +28,29 @@ import db, {
   TopicRel,
   PrivRel,
 } from '../db/db';
+
+import createEntityLoader from '../db/loaders/createEntityLoader';
+import childrenResolver from '../db/resolvers/childrenResolver';
+
 import ItemCountsFields from './fields/ItemCountsFields';
 import EntityMetaFields from './fields/EntityMetaFields';
 import UserParamsFields from './fields/UserParamFields';
 
 const fieldOptions = {
-  exclude: [ 'counts', 'meta', 'params', 'resources' ]
+  exclude: [
+    'counts',
+    'meta',
+    'params',
+    'resources',
+  ],
 };
+
+const PrivLoader = createEntityLoader(Priv);
+const RoomLoader = createEntityLoader(Room);
+const TextLoader = createEntityLoader(Text);
+const ThreadLoader = createEntityLoader(Thread);
+const TopicLoader = createEntityLoader(Topic);
+const UserLoader = createEntityLoader(User);
 
 const UserType = new GraphQLObjectType({
   name: 'User',
@@ -43,34 +59,34 @@ const UserType = new GraphQLObjectType({
     rels: {
       type: new GraphQLList(RelationType),
       args: defaultListArgs(),
-      resolve: resolver(User.Relations)
+      resolve: resolver(User.Relations),
     },
     roomrels: {
       type: new GraphQLList(RoomRelType),
       args: defaultListArgs(),
-      resolve: resolver(User.RoomRels)
+      resolve: resolver(User.RoomRels),
     },
     textrels: {
       type: new GraphQLList(TextRelType),
       args: defaultListArgs(),
-      resolve: resolver(User.TextRels)
+      resolve: resolver(User.TextRels),
     },
     threadrels: {
       type: new GraphQLList(ThreadRelType),
       args: defaultListArgs(),
-      resolve: resolver(User.ThreadRels)
+      resolve: resolver(User.ThreadRels),
     },
     topicrels: {
       type: new GraphQLList(TopicRelType),
       args: defaultListArgs(),
-      resolve: resolver(User.TopicRels)
+      resolve: resolver(User.TopicRels),
     },
     privrels: {
       type: new GraphQLList(PrivRelType),
       args: defaultListArgs(),
-      resolve: resolver(User.PrivRels)
+      resolve: resolver(User.PrivRels),
     },
-  })
+  }),
 });
 
 const ItemFields = {
@@ -79,24 +95,24 @@ const ItemFields = {
   creator: {
     type: UserType,
     resolve(item) {
-      return item.getUser();
-    }
+      return UserLoader.load(item.creator);
+    },
   },
   updater: {
     type: UserType,
     resolve(item) {
-      return db.models.user.findOne({ where: { id: item.updater } });
-    }
-  }
+      return UserLoader.load(item.updater);
+    },
+  },
 };
 
 const RelationFields = {
   user: {
     type: UserType,
-    resolve(rel) {
-      return db.models.user.findOne({ where: { id: rel.user } });
-    }
-  }
+    resolve(item) {
+      return UserLoader.load(item.user);
+    },
+  },
 };
 
 const PrivType = new GraphQLObjectType({
@@ -106,9 +122,9 @@ const PrivType = new GraphQLObjectType({
     rels: {
       type: new GraphQLList(PrivRelType),
       args: defaultListArgs(),
-      resolve: resolver(Priv.PrivRels)
-    }
-  })
+      resolve: resolver(Priv.PrivRels),
+    },
+  }),
 });
 
 const RoomType = new GraphQLObjectType({
@@ -118,31 +134,19 @@ const RoomType = new GraphQLObjectType({
     rels: {
       type: new GraphQLList(RoomRelType),
       args: defaultListArgs(),
-      resolve: resolver(Room.RoomRels)
+      resolve: resolver(Room.RoomRels),
     },
     threads: {
       type: new GraphQLList(ThreadType),
       args: defaultListArgs(),
-      resolve(entity, args) {
-        return db.models.thread.findAll({
-          limit: args.limit,
-          order: args.order,
-          where: { parents: { $contains: [ entity.id ] }, ...args.where },
-        });
-      }
+      resolve: childrenResolver(Thread),
     },
     texts: {
       type: new GraphQLList(TextType),
       args: defaultListArgs(),
-      resolve(entity, args) {
-        return db.models.text.findAll({
-          limit: args.limit,
-          order: args.order,
-          where: { parents: { $contains: [ entity.id ] }, ...args.where },
-        });
-      }
+      resolve: childrenResolver(Text),
     },
-  })
+  }),
 });
 
 const TextType = new GraphQLObjectType({
@@ -152,9 +156,9 @@ const TextType = new GraphQLObjectType({
     rels: {
       type: new GraphQLList(TextRelType),
       args: defaultListArgs(),
-      resolve: resolver(Text.TextRels)
-    }
-  })
+      resolve: resolver(Text.TextRels),
+    },
+  }),
 });
 
 const ThreadType = new GraphQLObjectType({
@@ -164,20 +168,14 @@ const ThreadType = new GraphQLObjectType({
     rels: {
       type: new GraphQLList(ThreadRelType),
       args: defaultListArgs(),
-      resolve: resolver(Thread.ThreadRels)
+      resolve: resolver(Thread.ThreadRels),
     },
     texts: {
       type: new GraphQLList(TextType),
       args: defaultListArgs(),
-      resolve(entity, args) {
-        return db.models.text.findAll({
-          limit: args.limit,
-          order: args.order,
-          where: { parents: { $contains: [ entity.id ] }, ...args.where },
-        });
-      }
+      resolve: childrenResolver(Text),
     },
-  })
+  }),
 });
 
 const TopicType = new GraphQLObjectType({
@@ -187,15 +185,15 @@ const TopicType = new GraphQLObjectType({
     rel: {
       type: new GraphQLList(TopicRelType),
       args: defaultListArgs(),
-      resolve: resolver(Topic.TopicRels)
-    }
-  })
+      resolve: resolver(Topic.TopicRels),
+    },
+  }),
 });
 
 const RelationType = new GraphQLObjectType({
   name: 'Relation',
   description: 'This represents a Relation',
-  fields: () => Object.assign(attributeFields(Relation, fieldOptions), RelationFields)
+  fields: () => Object.assign(attributeFields(Relation, fieldOptions), RelationFields),
 });
 
 const RoomRelType = new GraphQLObjectType({
@@ -205,10 +203,10 @@ const RoomRelType = new GraphQLObjectType({
     room: {
       type: RoomType,
       resolve(rel) {
-        return rel.getRoom();
-      }
+        return RoomLoader.load(rel.item);
+      },
     },
-  })
+  }),
 });
 
 const TextRelType = new GraphQLObjectType({
@@ -218,10 +216,10 @@ const TextRelType = new GraphQLObjectType({
     text: {
       type: TextType,
       resolve(rel) {
-        return rel.getText();
-      }
+        return TextLoader.load(rel.item);
+      },
     },
-  })
+  }),
 });
 
 const ThreadRelType = new GraphQLObjectType({
@@ -231,10 +229,10 @@ const ThreadRelType = new GraphQLObjectType({
     thread: {
       type: ThreadType,
       resolve(rel) {
-        return rel.getThread();
-      }
+        return ThreadLoader.load(rel.item);
+      },
     },
-  })
+  }),
 });
 
 const TopicRelType = new GraphQLObjectType({
@@ -244,10 +242,10 @@ const TopicRelType = new GraphQLObjectType({
     topic: {
       type: TopicType,
       resolve(rel) {
-        return rel.getTopic();
-      }
+        return TopicLoader.load(rel.item);
+      },
     },
-  })
+  }),
 });
 
 const PrivRelType = new GraphQLObjectType({
@@ -257,24 +255,24 @@ const PrivRelType = new GraphQLObjectType({
     priv: {
       type: PrivType,
       resolve(rel) {
-        return rel.getPriv();
-      }
+        return PrivLoader.load(rel.item);
+      },
     },
-  })
+  }),
 });
 
 const EntityArgs = Object.assign(defaultListArgs(), {
   id: {
-    type: GraphQLString
-  }
+    type: GraphQLString,
+  },
 });
 
 const RelationArgs = Object.assign(defaultListArgs(), {
   user: {
-    type: GraphQLString
+    type: GraphQLString,
   },
   item: {
-    type: GraphQLString
+    type: GraphQLString,
   },
 });
 
@@ -344,11 +342,11 @@ const QueryType = new GraphQLObjectType({
         resolve: resolver(PrivRel),
       },
     };
-  }
+  },
 });
 
 const Schema = new GraphQLSchema({
-  query: QueryType
+  query: QueryType,
 });
 
 export default Schema;

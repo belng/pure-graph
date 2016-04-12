@@ -11,6 +11,7 @@
   "license": "MIT",
   "dependencies": {
     "babel-preset-node5": "^11.0.1",
+    "dataloader": "^1.2.0",
     "graphql": "^0.4.16",
     "graphql-sequelize": "^0.22.0",
     "koa": "^1.2.0",
@@ -24,6 +25,7 @@
   "devDependencies": {
     "babel-cli": "^6.7.5",
     "babel-eslint": "^6.0.2",
+    "babel-plugin-transform-flow-strip-types": "^6.7.0",
     "eslint": "^2.7.0",
     "eslint-plugin-babel": "^3.2.0",
     "eslint-plugin-import": "^1.4.0"
