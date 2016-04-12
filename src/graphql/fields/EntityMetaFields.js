@@ -6,7 +6,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
-const EntityMetaFields = {
+const EntityMetaFields: { [key: string]: Object } = {
   meta: {
     type: new GraphQLObjectType({
       name: 'meta',

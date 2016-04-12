@@ -5,7 +5,7 @@ import {
   GraphQLInt,
 } from 'graphql';
 
-const CountsFields = {
+const CountsFields: { [key: string]: Object } = {
   counts: {
     type: new GraphQLObjectType({
       name: 'ItemCounts',

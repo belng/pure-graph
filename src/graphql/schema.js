@@ -84,11 +84,11 @@ const RelationFields = {
   },
 };
 
-function getItemFields(Model: Object, fields?: Object) {
+function getItemFields(Model: Object, fields?: { [key: string]: Object }) {
   return getAttributeFields(Model, Object.assign(ItemFields, fields));
 }
 
-function getRelationFields(Model: Object, fields?: Object) {
+function getRelationFields(Model: Object, fields?: { [key: string]: Object }) {
   return getAttributeFields(Model, Object.assign(RelationFields, fields));
 }
 

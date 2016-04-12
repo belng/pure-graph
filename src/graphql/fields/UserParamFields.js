@@ -7,7 +7,7 @@ import {
   GraphQLString,
 } from 'graphql';
 
-const ParamsFields = {
+const ParamsFields: { [key: string]: Object } = {
   params: {
     type: new GraphQLObjectType({
       name: 'params',

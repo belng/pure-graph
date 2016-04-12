@@ -13,6 +13,6 @@ const fieldOptions = {
   ],
 };
 
-export default function getAttributeFields(Model: Object, fields) {
+export default function getAttributeFields(Model: Object, fields?: { [key: string]: Object }): { [key: string]: Object } {
   return Object.assign(attributeFields(Model, fieldOptions), fields);
 }
